@@ -1,2 +1,94 @@
 ##Exercise 1
+import numpy as np
 
+# uint8
+uint8_min = np.iinfo(np.uint8).min
+uint8_max = np.iinfo(np.uint8).max
+
+# int8
+int8_min = np.iinfo(np.int8).min
+int8_max = np.iinfo(np.int8).max
+
+# uint32
+uint32_min = np.iinfo(np.uint32).min
+uint32_max = np.iinfo(np.uint32).max
+
+# int32
+int32_min = np.iinfo(np.int32).min
+int32_max = np.iinfo(np.int32).max
+
+print("uint8: ", uint8_min, "to", uint8_max)
+print("int8: ", int8_min, "to", int8_max)
+print("uint32: ", uint32_min, "to", uint32_max)
+print("int32: ", int32_min, "to", int32_max)
+
+
+##Exercise 2
+def check_odd_even(num):
+    if num % 2 == 0:
+        return f"{num} is even."
+    else:
+        return f"{num} is odd."
+
+# Example usage
+num = int(input("Enter an integer: "))
+print(check_odd_even(num))
+
+##Exercise 3
+import numpy as np
+import time
+
+# Creating large arrays
+size = 1000000
+list1 = list(range(size))
+list2 = list(range(size))
+array1 = np.arange(size)
+array2 = np.arange(size)
+
+# Timing list addition
+start = time.time()
+result_list = [x + y for x, y in zip(list1, list2)]
+end = time.time()
+print(f"Time for list addition: {end - start} seconds")
+
+# Timing numpy array addition
+start = time.time()
+result_array = array1 + array2
+end = time.time()
+print(f"Time for numpy array addition: {end - start} seconds")
+
+##Exercise 4
+import numpy as np
+
+# Create a 1D array
+my_arr = np.arange(10)
+print("Initial my_arr: ", my_arr)
+arr_slice = my_arr
+print("Initial arr_slice: ", arr_slice)
+
+# Change the first element of arr_slice
+arr_slice[0] = 55
+
+print("my_arr: ", my_arr)
+print("arr_slice: ", arr_slice)
+
+##Exercise 5
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set the dimensions of the image
+height, width = 100, 100
+image = np.zeros((height, width))
+
+# Create a white circular spot in the middle
+center = (height // 2, width // 2)
+radius = 20
+
+for i in range(height):
+    for j in range(width):
+        if (i - center[0]) ** 2 + (j - center[1]) ** 2 < radius ** 2:
+            image[i, j] = 1
+
+# Plot the image
+plt.imshow(image, cmap='gray')
+plt.show()
