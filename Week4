@@ -1,0 +1,91 @@
+#-----------------------------------#Exercise 1------------------------------------
+
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+# Define the dimensions of the images
+width, height = 256, 256
+
+# Create a random noise color image
+color_image = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)
+
+# Create a random noise grayscale image
+grayscale_image = np.random.randint(0, 256, (height, width), dtype=np.uint8)
+
+# Display the images
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.title("Random Noise Color Image")
+plt.imshow(cv2.cvtColor(color_image, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title("Random Noise Grayscale Image")
+plt.imshow(grayscale_image, cmap='gray')
+plt.axis('off')
+
+plt.show()
+
+#-----------------------------------#Exercise 2------------------------------------
+
+import cv2
+import numpy as np
+
+def crop_grid(img, num_horizontal_grid, num_vertical_grid, line_color):
+    h, w = img.shape[:2]
+    dx, dy = w // num_horizontal_grid, h // num_vertical_grid
+
+    for x in range(0, w, dx):
+        cv2.line(img, (x, 0), (x, h), line_color, 1)
+    for y in range(0, h, dy):
+        cv2.line(img, (0, y), (w, y), line_color, 1)
+
+    return img
+
+# Example usage
+image_path = "C:\Users\TuckSeng\Downloads\OneDrive_1_20-07-2024\dog.jfif"
+image = cv2.imread(image_path)
+grid_image = crop_grid(image, 4, 4, (255, 0, 0))
+
+# Display the image with grid
+cv2.imshow("Image with Grid", grid_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#-----------------------------------#Exercise 3------------------------------------
+import cv2
+import numpy as np
+
+def increase_brightness(img, value=30):
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    h, s, v = cv2.split(hsv)
+    v = cv2.add(v, value)
+    v[v > 255] = 255
+    v[v < 0] = 0
+    final_hsv = cv2.merge((h, s, v))
+    img = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+    return img
+
+# Example usage
+image_path = "C:\Users\TuckSeng\Downloads\OneDrive_1_20-07-2024\dog.jfif"
+image = cv2.imread(image_path)
+bright_image = increase_brightness(image, value=50)
+
+cv2.imshow("Brightened Image", bright_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#-----------------------------------#Exercise 4------------------------------------
+RGB (Red, Green, Blue)
+Use Case: Most commonly used color space for display screens (monitors, TVs, cameras, etc.).
+Example: Image editing and manipulation, web design.
+
+HSV (Hue, Saturation, Value)
+Use Case: Useful for image processing tasks where color manipulation is required, such as segmentation and color-based object detection.
+Example: Object tracking in computer vision, color-based image segmentation.
+
+CIELAB (L*, a*, b*)
+Use Case: Designed to be more perceptually uniform, meaning changes in the L*, a*, and b* components correspond more closely to changes in human color perception.
+Example: Color difference measurement, color grading in digital imaging, and color correction.
