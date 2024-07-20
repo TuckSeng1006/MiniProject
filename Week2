@@ -1,4 +1,4 @@
-##Exercise 1
+#-----------------------------------#Exercise 1------------------------------------
 import numpy as np
 
 # uint8
@@ -23,7 +23,7 @@ print("uint32: ", uint32_min, "to", uint32_max)
 print("int32: ", int32_min, "to", int32_max)
 
 
-##Exercise 2
+#-----------------------------------#Exercise 2------------------------------------
 def check_odd_even(num):
     if num % 2 == 0:
         return f"{num} is even."
@@ -34,7 +34,7 @@ def check_odd_even(num):
 num = int(input("Enter an integer: "))
 print(check_odd_even(num))
 
-##Exercise 3
+#-----------------------------------#Exercise 3------------------------------------
 import numpy as np
 import time
 
@@ -57,7 +57,7 @@ result_array = array1 + array2
 end = time.time()
 print(f"Time for numpy array addition: {end - start} seconds")
 
-##Exercise 4
+#-----------------------------------#Exercise 4------------------------------------
 import numpy as np
 
 # Create a 1D array
