@@ -1,0 +1,87 @@
+#--------------------------------------------------------------Exercise 1
+
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread('native-bee.png')
+
+# Define 3x3 sharpening kernel
+kernel_3x3 = np.array([[ 0, -1,  0],
+                       [-1,  5, -1],
+                       [ 0, -1,  0]])
+
+# Define 5x5 sharpening kernel
+kernel_5x5 = np.array([[-1, -1, -1, -1, -1],
+                       [-1, -1, -1, -1, -1],
+                       [-1, -1, 25, -1, -1],
+                       [-1, -1, -1, -1, -1],
+                       [-1, -1, -1, -1, -1]])
+
+# Apply the 3x3 kernel
+sharpened_3x3 = cv2.filter2D(image, -1, kernel_3x3)
+
+# Apply the 5x5 kernel
+sharpened_5x5 = cv2.filter2D(image, -1, kernel_5x5)
+
+# Display the results
+cv2.imshow('Original Image', image)
+cv2.imshow('Sharpened with 3x3 Kernel', sharpened_3x3)
+cv2.imshow('Sharpened with 5x5 Kernel', sharpened_5x5)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#--------------------------------------------------------------Exercise 2
+
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread('noise_lena.jpg')
+
+# Apply average filter
+average_blur = cv2.blur(image, (5, 5))
+
+# Apply Gaussian blur
+gaussian_blur = cv2.GaussianBlur(image, (5, 5), 0)
+
+# Apply median filter
+median_blur = cv2.medianBlur(image, 5)
+
+# Display the results
+cv2.imshow('Original Image', image)
+cv2.imshow('Average Blur', average_blur)
+cv2.imshow('Gaussian Blur', gaussian_blur)
+cv2.imshow('Median Blur', median_blur)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#--------------------------------------------------------------Exercise 3
+
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread('boat.jpg')
+
+# Convert to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Apply Otsu's thresholding
+_, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+# Find contours
+contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+# Draw bounding boxes
+output = image.copy()
+for contour in contours:
+    x, y, w, h = cv2.boundingRect(contour)
+    cv2.rectangle(output, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+# Display the results
+cv2.imshow('Original Image', image)
+cv2.imshow('Thresholded Image', thresh)
+cv2.imshow('Segmented Image', output)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
