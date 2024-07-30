@@ -1,0 +1,147 @@
+#--------------------------------------------------------------Exercise 1
+
+import cv2
+import imutils
+
+# Load the image
+image = cv2.imread('lena.jfif')
+
+# Rotate the image by 45 degrees
+rotated = imutils.rotate_bound(image, 45)
+
+# Display the image
+cv2.imshow('Rotated Image', rotated)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+#--------------------------------------------------------------Exercise 2
+
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread('lena.jfif')
+
+# Get image dimensions
+(h, w) = image.shape[:2]
+
+# Calculate the center of the image
+center = (w // 2, h // 2)
+
+# Create a rotation matrix
+M = cv2.getRotationMatrix2D(center, 45, 1.0)
+
+# Calculate the cosine and sine
+abs_cos = abs(M[0, 0])
+abs_sin = abs(M[0, 1])
+
+# Compute the new bounding dimensions of the image
+new_w = int(h * abs_sin + w * abs_cos)
+new_h = int(h * abs_cos + w * abs_sin)
+
+# Adjust the rotation matrix to account for the translation
+M[0, 2] += (new_w / 2) - center[0]
+M[1, 2] += (new_h / 2) - center[1]
+
+# Perform the rotation
+rotated = cv2.warpAffine(image, M, (new_w, new_h))
+
+# Display the image
+cv2.imshow('Rotated Image', rotated)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+import cv2
+import numpy as np
+
+# Load images
+flower = cv2.imread('flower.jfif')
+bee = cv2.imread('native-bee.png')
+
+# Resize flower image to match the size of the bee image
+flower = cv2.resize(flower, (bee.shape[1], bee.shape[0]))
+
+# Convert flower image to grayscale
+gray_flower = cv2.cvtColor(flower, cv2.COLOR_BGR2GRAY)
+
+# Apply a binary threshold to the grayscale image
+_, mask = cv2.threshold(gray_flower, 1, 255, cv2.THRESH_BINARY)
+
+# Create inverse mask
+mask_inv = cv2.bitwise_not(mask)
+
+# Black-out the area of flower in bee image
+bee_bg = cv2.bitwise_and(bee, bee, mask=mask_inv)
+
+# Take only region of flower from flower image
+flower_fg = cv2.bitwise_and(flower, flower, mask=mask)
+
+# Put flower in ROI and modify the main image
+result = cv2.add(bee_bg, flower_fg)
+
+# Display the image
+cv2.imshow('Bee and Flower', result)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#--------------------------------------------------------------Exercise 3
+
+import cv2
+import numpy as np
+import random
+
+def random_center_crop(image, min_crop_ratio, max_crop_ratio):
+    h, w = image.shape[:2]
+    crop_ratio = random.uniform(min_crop_ratio, max_crop_ratio)
+    new_h, new_w = int(h * crop_ratio), int(w * crop_ratio)
+
+    start_h = (h - new_h) // 2
+    start_w = (w - new_w) // 2
+
+    cropped_image = image[start_h:start_h + new_h, start_w:start_w + new_w]
+    return cropped_image
+
+# Load an image
+image = cv2.imread('lena.jfif')
+
+# Crop the central region
+cropped_image = random_center_crop(image, 0.5, 0.8)
+
+# Display the cropped image
+cv2.imshow('Cropped Image', cropped_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#--------------------------------------------------------------Exercise 4
+
+import cv2
+import numpy as np
+
+def add_salt_and_pepper_noise(image, amount=0.05, salt_vs_pepper=0.5):
+    row, col, ch = image.shape
+    s_vs_p = salt_vs_pepper
+    out = np.copy(image)
+    
+    # Salt mode
+    num_salt = np.ceil(amount * image.size * s_vs_p)
+    coords = [np.random.randint(0, i - 1, int(num_salt)) for i in image.shape]
+    out[coords[0], coords[1], :] = 1
+
+    # Pepper mode
+    num_pepper = np.ceil(amount * image.size * (1. - s_vs_p))
+    coords = [np.random.randint(0, i - 1, int(num_pepper)) for i in image.shape]
+    out[coords[0], coords[1], :] = 0
+
+    return out
+
+# Load an image
+image = cv2.imread('lena.jfif')
+
+# Add salt and pepper noise to the image
+noisy_image = add_salt_and_pepper_noise(image)
+
+# Display the noisy image
+cv2.imshow('Salt and Pepper Noise', noisy_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
